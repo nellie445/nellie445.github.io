@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jhanell | Data Portfolio</title>
+  <meta name="description" content="Jhanell Edwards — data analytics portfolio featuring Python, machine learning, data preparation, visualization, technical documentation, and project leadership.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <nav class="container">
+    <a class="brand" href="index.html">Jhanell</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero container">
+    <div class="eyebrow">Data • Technology • Problem Solving</div>
+    <h1>Turning messy information into useful systems and insights.</h1>
+    <p>I’m Jhanell Edwards, a data analytics professional with a background in computer science and cybersecurity. I use data, technology, and structured problem-solving to turn complex or unorganized information into useful analysis, systems, and decisions.</p>
+    <div class="actions">
+      <a class="button" href="#projects">View projects</a>
+      <a class="button secondary" href="https://github.com/nellie445" target="_blank" rel="noreferrer">GitHub</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-heading">
+        <h2>About</h2>
+        <p>Data analytics grounded in technical problem-solving, clear communication, and practical application.</p>
+      </div>
+      <div class="panel">
+        <p>I am completing a Bachelor of Science in Data Analytics at Western Governors University, building on an academic foundation in computer science and cybersecurity. My experience spans predictive analytics, exploratory data analysis, data cleaning and preparation, humanitarian information management, technical troubleshooting, documentation, and project coordination. I’m especially interested in work where data and technology can be used to make information clearer, improve processes, and support better decisions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Selected projects</h2>
+        <p>Click a project to open its case-study page.</p>
+      </div>
+
+      <!-- Project cards are generated automatically from projects.json -->
+      <div class="grid" id="project-grid"></div>
+      <p id="project-error" hidden>Projects could not be loaded. Please try again later.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Skills</h2>
+        <p>Tools and capabilities demonstrated through my academic, internship, technical, and independent project work.</p>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>Data & Analytics</h3>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">SQL</span>
+            <span class="tag">pandas</span>
+            <span class="tag">NumPy</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag">SciPy</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">Excel</span>
+            <span class="tag">Google Sheets</span>
+            <span class="tag">Looker Studio</span>
+            <span class="tag">Jupyter Notebook</span>
+            <span class="tag">Data cleaning</span>
+            <span class="tag">Exploratory data analysis</span>
+            <span class="tag">Predictive analytics</span>
+            <span class="tag">Data visualization</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Technical & Project</h3>
+          <div class="tags">
+            <span class="tag">Java</span>
+            <span class="tag">HTML/CSS/JavaScript</span>
+            <span class="tag">Database management</span>
+            <span class="tag">Requirements gathering</span>
+            <span class="tag">Technical documentation</span>
+            <span class="tag">Debugging</span>
+            <span class="tag">Project coordination</span>
+            <span class="tag">Stakeholder communication</span>
+            <span class="tag">Data management</span>
+            <span class="tag">CRISP-DM</span>
+            <span class="tag">Agile methodologies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Contact</h2>
+        <p>Interested in connecting about data analytics, technical projects, or professional opportunities? You can reach me through email, LinkedIn, or GitHub.</p>
+      </div>
+      <div class="actions">
+        <a class="button" href="mailto:edwardsjhanell@gmail.com">Email me</a>
+        <a class="button secondary" href="https://www.linkedin.com/in/jhanell-edwards-9571151a8" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="button secondary" href="https://github.com/nellie445" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">Jhanell Edwards • Data Analytics Portfolio</div>
+</footer>
+
+<script>
+  const projectGrid = document.getElementById("project-grid");
+  const projectError = document.getElementById("project-error");
+
+  fetch("projects.json")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Could not load projects.json");
+      }
+      return response.json();
+    })
+    .then(projects => {
+      projects.forEach((project, index) => {
+        const card = document.createElement("a");
+        card.className = "card";
+        card.href = project.page;
+
+        const number = document.createElement("span");
+        number.className = "number";
+        number.textContent = `PROJECT ${String(index + 1).padStart(2, "0")}`;
+
+        const title = document.createElement("h3");
+        title.textContent = project.title;
+
+        const description = document.createElement("p");
+        description.textContent = project.description;
+
+        const link = document.createElement("span");
+        link.className = "link";
+        link.textContent = "View case study →";
+
+        card.append(number, title, description, link);
+        projectGrid.appendChild(card);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      projectError.hidden = false;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "title": "StackGrow Inventory Management System",
+    "description": "Project co-leadership, requirements gathering, data preparation, documentation, debugging, and technical support for a university inventory management system.",
+    "page": "projects/stackgrow.html"
+  },
+  {
+    "title": "Hurricane Family Reunification Data Project",
+    "description": "Humanitarian data collection and structuring of missing-person information from family submissions for use in an existing reunification effort.",
+    "page": "projects/hurricane.html"
+  },
+  {
+    "title": "Data Analytics Internship \u2014 CASWJ",
+    "description": "Data analysis internship with the Cultural Arts Society of West Jordan using ticketing data to explore attendance, revenue, booking patterns, and reporting workflows.",
+    "page": "projects/internship.html"
+  },
+  {
+    "title": "Data Analytics Capstone",
+    "description": "Predictive analytics capstone using Python and machine learning to evaluate employee termination patterns across a 49,653-record workforce dataset.",
+    "page": "projects/data-capstone.html"
+  }
+]
