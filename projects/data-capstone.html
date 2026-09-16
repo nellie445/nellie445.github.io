@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Termination Prediction | Jhanell</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header>
+  <nav class="container">
+    <a class="brand" href="../index.html">Jhanell</a>
+    <div class="nav-links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <a class="back" href="../index.html#projects">← Back to projects</a>
+
+  <section class="project-hero">
+    <div class="eyebrow">Machine Learning • Predictive Analytics • Workforce Data</div>
+    <h1>Employee Termination Prediction</h1>
+    <p>
+      A data analytics capstone investigating whether employee termination could be predicted
+      from demographic and organizational characteristics in a longitudinal manufacturing
+      workforce dataset.
+    </p>
+
+    <div class="meta">
+      <span class="tag">Python</span>
+      <span class="tag">Jupyter Notebook</span>
+      <span class="tag">pandas</span>
+      <span class="tag">scikit-learn</span>
+      <span class="tag">SciPy</span>
+      <span class="tag">Matplotlib</span>
+      <span class="tag">CRISP-DM</span>
+    </div>
+
+  </section>
+
+  <article class="content">
+    <h2>Project Overview</h2>
+    <p>
+      The project asked whether employee termination could be predicted using demographic
+      and organizational characteristics. The goal was to move beyond retrospective turnover
+      counts and develop a reproducible analytical workflow that could support workforce
+      planning, succession planning, retirement preparation, recruiting forecasts, and further
+      investigation of retention patterns.
+    </p>
+    <p>
+      The analysis used 49,653 annual employee records from 2006 through 2015 representing
+      6,284 unique employees. The target was highly imbalanced: approximately 3% of records
+      represented terminated employees.
+    </p>
+
+    <h2>Analytical Approach</h2>
+    <p>
+      I structured the project using CRISP-DM and completed data validation, preparation,
+      exploratory analysis, statistical testing, predictive modeling, model evaluation, and
+      interpretation in a reproducible Jupyter Notebook developed in Visual Studio Code.
+    </p>
+
+    <div class="panel">
+      <h3>Key Technical Work</h3>
+      <ul>
+        <li>Validated the longitudinal workforce dataset and investigated data quality, redundancy, class imbalance, and placeholder values.</li>
+        <li>Created a binary termination target and removed outcome-derived variables that would cause target leakage.</li>
+        <li>Used EmployeeID for a group-aware 80/20 train/test split so records from the same employee could not appear in both partitions.</li>
+        <li>Built preprocessing pipelines with imputation, standardization, and one-hot encoding.</li>
+        <li>Performed exploratory analysis and statistical testing using Mann-Whitney U and chi-square tests.</li>
+        <li>Trained and compared class-weighted logistic regression, decision tree, and random forest models.</li>
+        <li>Evaluated models using precision, recall, F1, ROC-AUC, average precision, confusion matrices, ROC curves, and precision-recall curves.</li>
+        <li>Used permutation importance to interpret the selected model's predictor contributions.</li>
+      </ul>
+    </div>
+
+    <h2>Preventing Data Leakage</h2>
+    <p>
+      Because the dataset contained repeated annual observations for the same employees,
+      a conventional random row split could have placed one employee's history in both the
+      training and testing sets. I used a group-based split on EmployeeID and verified that
+      the two employee groups were disjoint.
+    </p>
+    <p>
+      Termination date, termination reason, termination type, employment status, and
+      EmployeeID were excluded from the predictor set because they either revealed the
+      outcome or could allow identifier memorization. Redundant date and gender fields were
+      also removed from the modeling dataset.
+    </p>
+
+    <h2>Model Comparison</h2>
+    <div class="panel">
+      <p><strong>Decision Tree:</strong> Accuracy 0.970 • Precision 0.508 • Recall 0.817 • F1 0.627 • ROC-AUC 0.914 • Average Precision 0.777</p>
+      <p><strong>Random Forest:</strong> Accuracy 0.945 • Precision 0.333 • Recall 0.794 • F1 0.469 • ROC-AUC 0.920 • Average Precision 0.743</p>
+      <p><strong>Logistic Regression:</strong> Accuracy 0.871 • Precision 0.160 • Recall 0.752 • F1 0.264 • ROC-AUC 0.871 • Average Precision 0.270</p>
+    </div>
+    <p>
+      I selected the decision tree because it achieved the strongest F1 score at the evaluated
+      threshold while retaining high recall and strong discrimination. Accuracy alone was not
+      treated as sufficient because approximately 97% of the records belonged to the active class.
+    </p>
+
+    <h2>Key Findings</h2>
+    <p>
+      The selected decision tree identified approximately 81.7% of terminated records in the
+      holdout data. Age was the strongest predictor in permutation-importance analysis, followed
+      by status year and gender, with city and job title also contributing information.
+    </p>
+    <p>
+      Interpretation required additional context: retirement represented approximately 59.6%
+      of all terminations and was concentrated among older, longer-tenured employees. Resignation
+      occurred among a younger, shorter-tenured group. This showed that a combined termination
+      target represents several different workforce events rather than one uniform type of attrition.
+    </p>
+
+    <h2>Outcome &amp; Limitations</h2>
+    <p>
+      The project met its planned analytical success criteria and demonstrated that termination
+      could be predicted to a meaningful but imperfect extent using the available variables.
+      The result is best treated as an analytical workforce-planning prototype rather than a
+      deployment-ready employee-risk system.
+    </p>
+    <p>
+      Important limitations included severe class imbalance, an older dataset from a single
+      organization, missing variables such as compensation, performance, engagement, attendance,
+      manager information, and labor-market conditions, and a false-positive rate that makes
+      individual-level decision making inappropriate.
+    </p>
+
+    <h2>What This Project Demonstrates</h2>
+    <div class="panel">
+      <ul>
+        <li>End-to-end data analytics and machine-learning workflow design.</li>
+        <li>Data validation, preparation, leakage prevention, and reproducible preprocessing.</li>
+        <li>Handling longitudinal and highly imbalanced classification data.</li>
+        <li>Statistical testing, exploratory analysis, visualization, and model interpretation.</li>
+        <li>Comparison of multiple machine-learning models using appropriate evaluation metrics.</li>
+        <li>Translation of technical results into practical findings, limitations, and recommendations.</li>
+      </ul>
+    </div>
+
+    <p>
+      <a class="button"
+         href="https://github.com/nellie445/data-analytics-capstone"
+         target="_blank"
+         rel="noopener noreferrer">
+        View on GitHub
+      </a>
+    </p>
+  </article>
+</main>
+</body>
+</html>
