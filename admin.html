@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage Projects | Jhanell</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-wrap { max-width: 820px; margin: 0 auto; padding: 4rem 1.25rem; }
+    .admin-form { display: grid; gap: 1rem; }
+    .admin-form label { display: grid; gap: .4rem; font-weight: 600; }
+    .admin-form input, .admin-form textarea {
+      width: 100%; box-sizing: border-box; padding: .85rem 1rem;
+      border: 1px solid #cfd2df; border-radius: 10px;
+      font: inherit; background: #fff; color: inherit;
+    }
+    .admin-form textarea { min-height: 120px; resize: vertical; }
+    .admin-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: .5rem; }
+    .admin-note { margin: 1rem 0 2rem; }
+    .project-preview { margin-top: 2.5rem; }
+    .project-preview ul { padding-left: 1.25rem; }
+    .status { margin-top: 1rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <a class="brand" href="index.html">Jhanell</a>
+    <div class="nav-links">
+      <a href="index.html#projects">Back to portfolio</a>
+    </div>
+  </nav>
+</header>
+
+<main class="admin-wrap">
+  <div class="eyebrow">Portfolio Manager</div>
+  <h1>Add a project</h1>
+  <p class="admin-note">
+    Fill out the form and click <strong>Add Project & Download File</strong>.
+    Your browser will create a new <code>projects.json</code> containing your existing projects plus the new one.
+    Upload that file to the root of your GitHub repository to replace the old <code>projects.json</code>.
+  </p>
+
+  <form id="project-form" class="admin-form">
+    <label>
+      Project title
+      <input id="title" name="title" required placeholder="e.g. Customer Churn Analysis">
+    </label>
+
+    <label>
+      Short description
+      <textarea id="description" name="description" required placeholder="Briefly describe what the project demonstrates."></textarea>
+    </label>
+
+    <label>
+      Case-study filename
+      <input id="filename" name="filename" required placeholder="e.g. customer-churn.html">
+    </label>
+
+    <div class="admin-actions">
+      <button class="button" type="submit">Add Project &amp; Download File</button>
+      <button class="button secondary" type="button" id="clear-button">Clear form</button>
+    </div>
+  </form>
+
+  <p id="status" class="status" aria-live="polite"></p>
+
+  <section class="project-preview">
+    <h2>Projects currently on the site</h2>
+    <ul id="current-projects"></ul>
+  </section>
+</main>
+
+<script>
+  let projects = [];
+
+  const form = document.getElementById("project-form");
+  const titleInput = document.getElementById("title");
+  const descriptionInput = document.getElementById("description");
+  const filenameInput = document.getElementById("filename");
+  const currentProjects = document.getElementById("current-projects");
+  const status = document.getElementById("status");
+
+  function renderCurrentProjects() {
+    currentProjects.innerHTML = "";
+    projects.forEach((project, index) => {
+      const item = document.createElement("li");
+      item.textContent = `${index + 1}. ${project.title}`;
+      currentProjects.appendChild(item);
+    });
+  }
+
+  fetch("projects.json", { cache: "no-store" })
+    .then(response => {
+      if (!response.ok) throw new Error("Could not load projects.json");
+      return response.json();
+    })
+    .then(data => {
+      projects = data;
+      renderCurrentProjects();
+    })
+    .catch(() => {
+      status.textContent = "I couldn't load the current projects.json. Refresh the page and try again.";
+    });
+
+  filenameInput.addEventListener("blur", () => {
+    let value = filenameInput.value.trim();
+    if (value && !value.toLowerCase().endsWith(".html")) {
+      filenameInput.value = value + ".html";
+    }
+  });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    let filename = filenameInput.value.trim();
+    if (!filename.toLowerCase().endsWith(".html")) filename += ".html";
+
+    const newProject = {
+      title: titleInput.value.trim(),
+      description: descriptionInput.value.trim(),
+      page: `projects/${filename}`
+    };
+
+    const updatedProjects = [...projects, newProject];
+    const blob = new Blob([JSON.stringify(updatedProjects, null, 2) + "\n"], {
+      type: "application/json"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const download = document.createElement("a");
+    download.href = url;
+    download.download = "projects.json";
+    document.body.appendChild(download);
+    download.click();
+    download.remove();
+    URL.revokeObjectURL(url);
+
+    projects = updatedProjects;
+    renderCurrentProjects();
+    form.reset();
+    status.textContent = `"${newProject.title}" was added. Your updated projects.json has been downloaded.`;
+  });
+
+  document.getElementById("clear-button").addEventListener("click", () => {
+    form.reset();
+    status.textContent = "";
+  });
+</script>
+</body>
+</html>
